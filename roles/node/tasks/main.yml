@@ -1,0 +1,13 @@
+---
+- name: Download node
+  get_url: 
+    url="{{ node_url }}"
+    dest="/tmp/{{ node_name }}.deb"
+  
+- name: Install node
+  apt: deb="/tmp/{{ node_name }}.deb"
+  sudo: yes
+  
+- name: Install wscat
+  npm: name=wscat global=yes
+  sudo: yes

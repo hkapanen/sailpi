@@ -1,0 +1,24 @@
+# Run setup first, then this:
+# ansible-playbook -i hosts site.yml
+
+---
+- hosts: all
+  remote_user: pi
+  gather_facts: no
+
+  roles:
+    - common
+    - rtl8188eu
+    - hotspot
+    - usb-serial
+    - kplex
+    - canboat
+    - node
+    - signalk
+
+  tasks:
+    - name: ALL DONE!
+      pause: prompt="Press [Enter] to reboot."
+    - name: reboot
+      sudo: yes
+      action: command /sbin/reboot -t now

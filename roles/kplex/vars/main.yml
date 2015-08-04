@@ -1,0 +1,3 @@
+---
+kplex_name: kplex_1.3-1_armhf
+kplex_url: http://www.stripydog.com/download/{{ kplex_name }}.deb

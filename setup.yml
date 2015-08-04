@@ -1,0 +1,28 @@
+---
+# Set up the system first with the following, with the hosts line (and file!) updated accordingly:
+# ansible-playbook -c paramiko -i hosts setup.yml --ask-pass --sudo
+- hosts: all
+  sudo: yes
+  user: "{{ ansible_ssh_user }}"
+
+  vars_prompt:
+    - name: new_password
+      prompt: "Enter new password"
+      private: yes
+
+  tasks:
+    - name: Create .ssh
+      file: state=directory dest=/home/{{ ansible_ssh_user }}/.ssh/
+
+    - name: pushes your RSA key to the Raspberry Pi. (ignore if this fails)
+      copy: src=~/.ssh/id_rsa.pub dest=/home/{{ ansible_ssh_user }}/.ssh/authorized_keys owner={{ ansible_ssh_user }}
+      register: rsa
+      ignore_errors: yes
+
+    - name: Pushes your DSA key to the Raspberry Pi.(it's NOT ok if both this and previous fail)
+      copy: src=~/.ssh/id_dsa.pub dest=/home/{{ ansible_ssh_user }}/.ssh/authorized_keys owner={{ ansible_ssh_user }}
+      when: rsa|failed
+
+    - name: Change default user password
+      shell: echo {{ ansible_ssh_user }}:{{ new_password }} | sudo chpasswd
+      no_log: yes

@@ -1,0 +1,4 @@
+# Change these variables invest normal data file to reflect your SSID and passphrase.
+ssid: Sophia
+wpa_passphrase: kaikkipaitsipurjehdusonturhaa
+chipset: rtl871xdrv

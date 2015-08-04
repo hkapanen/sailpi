@@ -1,0 +1,34 @@
+---
+- name: Enforce HTTPS for all the GIT traffic
+  command: 'git config --global url."https://github.com/".insteadOf git@github.com:'
+  command: 'git config --global url."https://".insteadOf git://'
+
+- name: Download SignalK
+  git: repo=https://github.com/SignalK/signalk-server-node.git dest={{ signalk_path }} clone=yes
+
+- name: Install SignalK
+  npm: path={{ signalk_path }}
+
+- name: Install Bower
+  npm: name=bower path={{ signalk_path }}
+
+# cannot get ansible bower module to behave, so...
+- name: install sailgauge
+  command: node_modules/.bin/bower install https://github.com/SignalK/sailgauge.git
+  args:
+    chdir: "{{ signalk_path }}"
+
+- name: install instrumentpanel
+  command: node_modules/.bin/bower install https://github.com/SignalK/instrumentpanel.git
+  args:
+    chdir: "{{ signalk_path }}"
+
+- name: install simplegauges
+  command: node_modules/.bin/bower install https://github.com/SignalK/simplegauges.git
+  args:
+    chdir: "{{ signalk_path }}"
+
+- name: install maptracker
+  command: node_modules/.bin/bower install https://github.com/hkapanen/maptracker.git
+  args:
+    chdir: "{{ signalk_path }}"
