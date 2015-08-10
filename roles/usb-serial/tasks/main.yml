@@ -1,4 +1,6 @@
 ---
+# Use udev-rules to create (static) symlinks for specific usb-serial devices 
+# when they are plugged inß
 - name: Add udev-rules for USB-serial instruments
   copy: src=usb-serial.rules dest=/etc/udev/rules.d/98-usb-serial.rules
   sudo: yes

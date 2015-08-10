@@ -11,4 +11,7 @@
 - name: Copy kplex config file
   copy: src=kplex.conf dest=/etc/kplex.conf
   sudo: yes
-  
+
+- name: Make kplex start at boot
+  shell: update-rc.d kplex defaults
+  sudo: yes
