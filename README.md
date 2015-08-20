@@ -9,6 +9,6 @@ Current system is:
 - Specific RS232-USB converters for NMEA1893 instruments 
 	- GPS
 	- Nexus NX sailing instruments
-	- dAISy AIS receiver
+	- [dAISy](https://github.com/astuder/dAISy) AIS receiver
 
 TBD: cell connectivity
