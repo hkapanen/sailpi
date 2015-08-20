@@ -1,0 +1,10 @@
+---
+# Custom UPS-like functionality from MightyBoost+Motino (http://lowpowerlab.com/mightyboost/)
+
+- name: Copy shutdown script in place
+  copy: src=shutdowncheck.sh dest=/etc/shutdowncheck.sh mode=755
+  sudo: yes
+
+- name: make shutdown script start at boot time
+  lineinfile: dest=/etc/rc.local insertbefore="exit 0" line="/etc/shutdowncheck.sh &"
+  sudo: yes

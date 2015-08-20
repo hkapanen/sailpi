@@ -8,6 +8,7 @@
 
   roles:
     - common
+    - ups
     - rtl8188eu
     - hotspot
     - usb-serial
