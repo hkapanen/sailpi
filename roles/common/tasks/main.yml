@@ -1,10 +1,14 @@
-#Assuming fresh Raspbian Wheezy (2015-05-05)
+#Assuming fresh Raspbian Jessie (2015-09-24)
 
 ---
 - name: Set new hostname
   hostname: name={{ hostname }}
   sudo: yes
 
+- name: New hostname also to /etc/hosts file
+  lineinfile: dest=/etc/hosts regexp='^127\.0\.1\.1' line='127.0.1.1 {{ hostname }}'
+  sudo: yes
+  
 - name: Copy timezone file
   copy: src=timezone dest=/etc/timezone
   sudo: yes
@@ -41,6 +45,7 @@
     - rng-tools
     - netatalk
     - screen
+    - dnsutils
 
 - name: Uninstall unnecessary stuff
   apt: pkg={{ item }} state=absent
@@ -107,7 +112,11 @@
   - minecraft-pi
   - python-minecraftpi
   - wolfram-engine
-
+  - libreoffice
+  - claws-mail
+  - greenfoot
+  - bluej
+  
 - name: Autoremove any unused packages
   shell: "apt-get autoremove --assume-yes --purge"
   sudo: yes
@@ -116,8 +125,12 @@
   shell: "apt-get autoclean --assume-yes"
   sudo: yes
 
-- name: Cleanup the user home
-  file: path=/home/{{ ansible_ssh_user }}/python_games state=absent
+- name: Cleanup the user home directory
+  shell: "rm -rf /home/{{ ansible_ssh_user }}/*"
+
+- name: Enforce HTTPS for all the GIT traffic
+  command: 'git config --global url."https://github.com/".insteadOf git@github.com:'
+  command: 'git config --global url."https://".insteadOf git://'
 
 - name: Some shell aliases for the user
   lineinfile: dest=/home/{{ ansible_ssh_user }}/.bashrc line="{{ item }}"

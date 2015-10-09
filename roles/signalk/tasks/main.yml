@@ -1,8 +1,4 @@
 ---
-- name: Enforce HTTPS for all the GIT traffic
-  command: 'git config --global url."https://github.com/".insteadOf git@github.com:'
-  command: 'git config --global url."https://".insteadOf git://'
-
 - name: Download SignalK
   git: repo=https://github.com/SignalK/signalk-server-node.git dest={{ signalk_path }} clone=yes
 

@@ -9,7 +9,6 @@
   roles:
     - common
     - ups
-    - rtl8188eu
     - hotspot
     - usb-serial
     - kplex
@@ -22,4 +21,5 @@
       pause: prompt="Press [Enter] to reboot."
     - name: reboot
       sudo: yes
-      action: command /sbin/reboot -t now
+      action: command /sbin/reboot
+      
