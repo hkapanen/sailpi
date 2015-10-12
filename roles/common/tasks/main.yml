@@ -46,6 +46,7 @@
     - netatalk
     - screen
     - dnsutils
+    - wavemon
 
 - name: Uninstall unnecessary stuff
   apt: pkg={{ item }} state=absent
