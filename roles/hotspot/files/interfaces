@@ -7,8 +7,7 @@ allow-hotplug wlan0
 iface wlan0 inet static
   address 192.168.74.1
   netmask 255.255.255.0
+  pre-up iptables-restore < /etc/iptables.ipv4.nat
 
 allow-hotplug eth1
 iface eth1 inet dhcp
-
-up iptables-restore < /etc/iptables.ipv4.nat

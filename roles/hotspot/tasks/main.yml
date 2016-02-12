@@ -18,38 +18,20 @@
   sudo: yes
 
 ##############################################################################
-# This WLAN dongle (WN725N) needs a custom hostapd (sigh!)
-# http://www.jenssegers.be/blog/43/Realtek-RTL8188-based-access-point-on-Raspberry-Pi
+# Install and configure hostapd
 
-- name: Remove previous hostapd, if it exists
-  apt: pkg=hostapd state=absent
+- name: Install hostapd
+  apt: pkg=hostapd state=latest
   sudo: yes
   
-- name: Download custom hostapd sources
-  get_url: url=https://github.com/jenssegers/RTL8188-hostapd/archive/v2.0.tar.gz dest=/tmp
-
-- name: Unarchive hostapd sources 
-  unarchive: src=/tmp/RTL8188-hostapd-2.0.tar.gz dest=/tmp copy=no
-
-- command: make
-  args:
-    chdir: "/tmp/RTL8188-hostapd-2.0/hostapd"
-
-- command: sudo make install
-  args:
-    chdir: "/tmp/RTL8188-hostapd-2.0/hostapd"
-    
-- name: Fix boot system symlink for hostapd
-  command: ln -s /etc/init.d/hostapd /etc/rc2.d/S02hostapd
-  sudo: yes
-
-##############################################################################
-# Configure hostapd
-
 - name: Copy hostapd.conf over
   copy: src=hostapd.conf dest=/etc/hostapd/hostapd.conf
   sudo: yes
 
+- name: Point hostapd at the config file
+  lineinfile: dest=/etc/default/hostapd.conf regexp=^'DAEMON_CONF=""' line='DAEMON_CONF="/etc/hostapd/hostapd.conf"'
+  sudo: yes
+  
 ##############################################################################
 # DNS and DHCP services
 
