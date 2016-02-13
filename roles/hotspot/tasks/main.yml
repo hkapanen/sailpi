@@ -29,7 +29,7 @@
   sudo: yes
 
 - name: Point hostapd at the config file
-  lineinfile: dest=/etc/default/hostapd.conf regexp=^'DAEMON_CONF=""' line='DAEMON_CONF="/etc/hostapd/hostapd.conf"'
+  lineinfile: dest=/etc/default/hostapd regexp=^'DAEMON_CONF=""' line='DAEMON_CONF="/etc/hostapd/hostapd.conf"'
   sudo: yes
   
 ##############################################################################
