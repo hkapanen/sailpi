@@ -11,6 +11,10 @@
       private: yes
 
   tasks:
+    - name: Expand filesystem
+      shell: "raspi-config --expand-rootfs"
+      sudo: yes
+
     - name: Create .ssh
       file: state=directory dest=/home/{{ ansible_ssh_user }}/.ssh/
 
@@ -26,11 +30,7 @@
     - name: Change default user password
       shell: echo {{ ansible_ssh_user }}:{{ new_password }} | sudo chpasswd
       no_log: yes
-      
-    - name: Expand filesystem
-      shell: "raspi-config --expand-rootfs"
-      sudo: yes
-    
+          
     - name: Setup completed!
       pause: prompt="Press [Enter] to reboot."
 
