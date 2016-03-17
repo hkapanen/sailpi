@@ -1,18 +1,11 @@
 ---
 ##############################################################################
-# Create a wifi hotspot with 4G/LTE internet connectivity
+# Create a wifi hotspot and wifi uplink
 
 ##############################################################################
 
-# DNA-branded Huawei E3372s-153 4G USB stick 
-
-# needs to be switched from mass-storage to modem mode
-- name: Install usb_modeswitch
-  apt: pkg=usb-modeswitch state=latest
-  sudo: yes
-
-# Cell USB modems tend to consume more power than available by default
-# Ensure you have a power source that is beefy enough!
+##############################################################################
+# Max USB power output
 - name: Switch USB to max power output
   lineinfile: dest=/boot/config.txt line='max_usb_current=1'
   sudo: yes
@@ -43,13 +36,20 @@
   copy: src=dnsmasq.conf dest=/etc/dnsmasq.conf
   sudo: yes
 
-- name: Update network interface configurations.
+##############################################################################
+# Interfaces
+
+- name: Update network interface configurations
   copy: src=interfaces dest=/etc/network/interfaces
   sudo: yes
 
-- name: Wiggle wlan0
-  shell: ifdown wlan0
-  shell: ifup wlan0
+- name: Update wpa supplicant config
+  copy: src=wpa_supplicant.conf dest=/etc/wpa_supplicant/wpa_supplicant.conf 
+  sudo: yes
+
+- name: Wiggle wlans
+  shell: ifdown wlan0; ifup wlan0
+  shell: ifdown wlan1; ifup wlan1
   sudo: yes
 
 ##############################################################################
@@ -65,7 +65,6 @@
 
 - name: Flush IPTables and NAT routing table
   shell: iptables -F
-  shell: iptables -t nat -F
   sudo: yes
 
 - name: Copy IPTables config file over
